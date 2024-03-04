@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinostat Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1>Hello ESP32</h1>
-    <p>This is a sample HTML page with external CSS served from ESP32.</p>
-  </div>
+    <header>
+        <h1>Clinostat Dashboard</h1>
+    </header>
+    <div class="container">
+        <div class="sensor">
+            <h2>Sensor Data</h2>
+            <p>Temperature: <span id="temperature">--</span> &deg;C</p>
+            <p>Humidity: <span id="humidity">--</span>%</p>
+            <p>Rotation Speed: <span id="rotation-speed">--</span> RPM</p>
+        </div>
+        <div class="controls">
+            <h2>Controls</h2>
+            <button id="start">Start Rotation</button>
+            <button id="stop">Stop Rotation</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
+
 </html>
 

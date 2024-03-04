@@ -38,12 +38,13 @@ void setup() {
       Serial.println("Failed to open styles.css file");
       return;
     }
-    server.streamFile(file, "text/css");
+    server.streamFile(file,"text/css");
     file.close();
   });
 
   server.begin();
   Serial.println("HTTP server started");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
