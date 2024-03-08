@@ -4,8 +4,8 @@
 #include <ESP_Google_Sheet_Client.h>
 #include "index.h" 
 
-#define LOCAL_SSID "MENDES"
-#define LOCAL_PASS "Ml2721091201"
+#define LOCAL_SSID "coke_jonas"
+#define LOCAL_PASS "araujo@123"
 
 #define PIN_OUTPUT 26 // connected to nothing but an example of a digital write from the web page
 #define PIN_FAN 27    // pin 27 and is a PWM signal to control a fan speed
@@ -22,7 +22,7 @@ uint32_t SensorUpdate = 0;
 int FanRPM = 0;
 
 
-bool btn0 = false;
+bool btn0, btn1, btn2, btn3, btn4 = false;
 
 int motorVelocity = 1000;
 const int motor1_step_pin = 2;
@@ -58,36 +58,19 @@ void setup() {
   motor3.setAccelerationInStepsPerSecondPerSecond(500);
 
 
-  pinMode(PIN_FAN, OUTPUT);
-  pinMode(PIN_LED, OUTPUT);
+ //disableCore0WDT();
+ //disableCore1WDT();
 
-  // turn off led
-  LED0 = false;
-  digitalWrite(PIN_LED, LED0);
-
-  // configure LED PWM functionalitites
-  ledcSetup(0, 10000, 8);
-  ledcAttachPin(PIN_FAN, 0);
-  ledcWrite(0, FanSpeed);
-
-  // if your web page or XML are large, you may not get a call back from the web page
-  // and the ESP will think something has locked up and reboot the ESP
-  // not sure I like this feature, actually I kinda hate it
-  // disable watch dog timer 0
-  disableCore0WDT();
-
-  // maybe disable watch dog timer 1 if needed
-  //  disableCore1WDT();
-
-  // just an update to progress
   Serial.println("starting server");
 
   WiFi.begin(LOCAL_SSID, LOCAL_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    //acendeiled
   }
-  Serial.print("IP address: "); Serial.println(WiFi.localIP());
+  Serial.print("IP address: "); 
+  Serial.println(WiFi.localIP());
   printWifiStatus();
 
 
@@ -104,9 +87,14 @@ void setup() {
   // add as many as you need to process incoming strings from your web page
   // as you can imagine you will need to code some javascript in your web page to send such strings
   // this process will be documented in the SuperMon.h web page code
-  server.on("/UPDATE_SLIDER", UpdateSlider);
   server.on("/BUTTON_0", ProcessButton_0);
   server.on("/BUTTON_1", ProcessButton_1);
+  server.on("/BUTTON_2", ProcessButton_2);
+  server.on("/BUTTON_3", ProcessButton_3);
+  server.on("/BUTTON_4", ProcessButton_4);
+  server.on("/BUTTON_5", ProcessButton_5);
+  server.on("/BUTTON_6", ProcessButton_6);
+  server.on("/BUTTON_7", ProcessButton_7);
 
   server.begin();
 
@@ -114,154 +102,83 @@ void setup() {
 
 void loop() {
 
-  // you main loop that measures, processes, runs code, etc.
-  // note that handling the "on" strings from the web page are NOT in the loop
-  // that processing is in individual functions all managed by the wifi lib
-
-  // in my example here every 50 ms, i measure some analog sensor data (my finger dragging over the pins
-  // and process accordingly
-  // analog input can be from temperature sensors, light sensors, digital pin sensors, etc.
-  if ((millis() - SensorUpdate) >= 50) {
-    //Serial.println("Reading Sensors");
-    SensorUpdate = millis();
-    BitsA0 = analogRead(PIN_A0);
-    BitsA1 = analogRead(PIN_A1);
-
-    // standard converion to go from 12 bit resolution reads to volts on an ESP
-    VoltsA0 = BitsA0 * 3.3 / 4096;
-    VoltsA1 = BitsA1 * 3.3 / 4096;
-
-  }
-
-  // no matter what you must call this handleClient repeatidly--otherwise the web page
-  // will not get instructions to do something
   server.handleClient();
 
 }
 
-
-// function managed by an .on method to handle slider actions on the web page
-// this example will get the passed string called VALUE and conver to a pwm value
-// and control the fan speed
-void UpdateSlider() {
-
-  // many I hate strings, but wifi lib uses them...
-  String t_state = server.arg("VALUE");
-
-  // conver the string sent from the web page to an int
-  FanSpeed = t_state.toInt();
-  Serial.print("UpdateSlider"); Serial.println(FanSpeed);
-  // now set the PWM duty cycle
-  ledcWrite(0, FanSpeed);
-
-
-  // YOU MUST SEND SOMETHING BACK TO THE WEB PAGE--BASICALLY TO KEEP IT LIVE
-
-  // option 1: send no information back, but at least keep the page live
-  // just send nothing back
-  // server.send(200, "text/plain", ""); //Send web page
-
-  // option 2: send something back immediately, maybe a pass/fail indication, maybe a measured value
-  // here is how you send data back immediately and NOT through the general XML page update code
-  // my simple example guesses at fan speed--ideally measure it and send back real data
-  // i avoid strings at all caost, hence all the code to start with "" in the buffer and build a
-  // simple piece of data
-  FanRPM = map(FanSpeed, 0, 255, 0, 2400);
-  strcpy(buf, "");
-  sprintf(buf, "%d", FanRPM);
-  sprintf(buf, buf);
-
-  // now send it back
-  server.send(200, "text/plain", buf); //Send web page
-
-}
-
-// now process button_0 press from the web site. Typical applications are the used on the web client can
-// turn on / off a light, a fan, disable something etc
 void ProcessButton_0() {
 
   btn0 = !btn0;
   motor1.setSpeedInStepsPerSecond(motorVelocity/4); 
-  motor2.setSpeedInStepsPerSecond(motorVelocity/4); 
+  motor2.setSpeedInStepsPerSecond(motorVelocity/4);
   motor3.setSpeedInStepsPerSecond(motorVelocity/4);
-  Serial.print("Button 0 press"); Serial.print("motorVelocity in 25%");
   server.send(200, "text/plain", ""); 
 }
 
-// same notion for processing button_1
 void ProcessButton_1() {
+  btn1 = !btn1;
   motor1.setSpeedInStepsPerSecond(motorVelocity/2); 
   motor2.setSpeedInStepsPerSecond(motorVelocity/2); 
   motor3.setSpeedInStepsPerSecond(motorVelocity/2);
-  Serial.print("Button 1 press"); Serial.print("motorVelocity in 50%");
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_2() {
+  btn2 = !btn2;
+  motor1.setSpeedInStepsPerSecond((motorVelocity/4)*3); 
+  motor2.setSpeedInStepsPerSecond((motorVelocity/4)*3); 
+  motor3.setSpeedInStepsPerSecond((motorVelocity/4)*3);
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_3() {
+  btn3 = !btn3;
+  motor1.setSpeedInStepsPerSecond((motorVelocity/4)*3); 
+  motor1.setSpeedInStepsPerSecond(motorVelocity); 
+  motor2.setSpeedInStepsPerSecond(motorVelocity); 
+  motor3.setSpeedInStepsPerSecond(motorVelocity);
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_4() {
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_5() {
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_6() {
+  server.send(200, "text/plain", ""); 
+}
+
+void ProcessButton_7() {
   server.send(200, "text/plain", ""); 
 }
 
 
-// code to send the main web page
-// PAGE_MAIN is a large char defined in SuperMon.h
+
 void SendWebsite() {
 
   Serial.println("sending web page");
-  // you may have to play with this value, big pages need more porcessing time, and hence
-  // a longer timeout that 200 ms
   server.send(200, "text/html", PAGE_MAIN);
 
 }
 
-// code to send the main web page
-// I avoid string data types at all cost hence all the char mainipulation code
 void SendXML() {
 
-  // Serial.println("sending xml");
 
   strcpy(XML, "<?xml version = '1.0'?>\n<Data>\n");
-
-  // send bitsA0
-  sprintf(buf, "<B0>%d</B0>\n", BitsA0);
-  strcat(XML, buf);
-  // send Volts0
-  sprintf(buf, "<V0>%d.%d</V0>\n", (int) (VoltsA0), abs((int) (VoltsA0 * 10)  - ((int) (VoltsA0) * 10)));
-  strcat(XML, buf);
-
-  // send bits1
-  sprintf(buf, "<B1>%d</B1>\n", BitsA1);
-  strcat(XML, buf);
-  // send Volts1
-  sprintf(buf, "<V1>%d.%d</V1>\n", (int) (VoltsA1), abs((int) (VoltsA1 * 10)  - ((int) (VoltsA1) * 10)));
-  strcat(XML, buf);
-
-  // show led0 status
-  if (LED0) {
-    strcat(XML, "<LED>1</LED>\n");
-  }
-  else {
-    strcat(XML, "<LED>0</LED>\n");
-  }
-  
-  if (btn0) {
+ 
+   
+  if (btn0)
     strcat(XML, "<btn0>1</btn0>\n");
-  }
-  else {
+  else
     strcat(XML, "<btn0>0</btn0>\n");
-  }
 
-
-  if (SomeOutput) {
-    strcat(XML, "<SWITCH>1</SWITCH>\n");
-  }
-  else {
-    strcat(XML, "<SWITCH>0</SWITCH>\n");
-  }
 
   strcat(XML, "</Data>\n");
-  // wanna see what the XML code looks like?
-  // actually print it to the serial monitor and use some text editor to get the size
-  // then pad and adjust char XML[2048]; above
   Serial.println(XML);
-
-  // you may have to play with this value, big pages need more porcessing time, and hence
-  // a longer timeout that 200 ms
   server.send(200, "text/xml", XML);
 
 

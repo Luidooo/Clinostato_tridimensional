@@ -38,13 +38,7 @@ const char PAGE_MAIN[] PROGMEM = R"=====(
       line-height: 20px;
       transition: all 200ms ease-in-out;
     }
-    .fanrpmslider {
-      width: 30%;
-      height: 55px;
-      outline: none;
-      height: 25px;
-    }
-    .bodytext {
+   .bodytext {
       font-family: "Verdana", "Arial", sans-serif;
       font-size: 24px;
       text-align: left;
