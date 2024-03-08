@@ -21,6 +21,10 @@ bool LED0 = false, SomeOutput = false;
 uint32_t SensorUpdate = 0;
 int FanRPM = 0;
 
+
+bool btn0 = false;
+
+int motorVelocity = 1000;
 const int motor1_step_pin = 2;
 const int motor1_direction_pin = 4;
 const int motor2_step_pin = 15;
@@ -31,7 +35,6 @@ const int motor3_direction_pin = 5;
 ESP_FlexyStepper motor1;
 ESP_FlexyStepper motor2;
 ESP_FlexyStepper motor3;
-
 
 char XML[2048];
 
@@ -47,11 +50,11 @@ void setup() {
   motor2.connectToPins(motor2_step_pin, motor2_direction_pin);
   motor3.connectToPins(motor3_step_pin, motor3_direction_pin);
 
-  motor1.setSpeedInStepsPerSecond(1000); 
+  motor1.setSpeedInStepsPerSecond(motorVelocity); 
   motor1.setAccelerationInStepsPerSecondPerSecond(500);
-  motor2.setSpeedInStepsPerSecond(1000); 
+  motor2.setSpeedInStepsPerSecond(motorVelocity); 
   motor2.setAccelerationInStepsPerSecondPerSecond(500);
-  motor3.setSpeedInStepsPerSecond(1000);
+  motor3.setSpeedInStepsPerSecond(motorVelocity);
   motor3.setAccelerationInStepsPerSecondPerSecond(500);
 
 
@@ -105,7 +108,6 @@ void setup() {
   server.on("/BUTTON_0", ProcessButton_0);
   server.on("/BUTTON_1", ProcessButton_1);
 
-  // finally begin the server
   server.begin();
 
 }
@@ -178,62 +180,21 @@ void UpdateSlider() {
 // turn on / off a light, a fan, disable something etc
 void ProcessButton_0() {
 
-  //
-
-
-  LED0 = !LED0;
-  digitalWrite(PIN_LED, LED0);
-  Serial.print("Button 0 "); Serial.println(LED0);
-  // regardless if you want to send stuff back to client or not
-  // you must have the send line--as it keeps the page running
-  // if you don't want feedback from the MCU--or let the XML manage
-  // sending feeback
-
-  // option 1 -- keep page live but dont send any thing
-  // here i don't need to send and immediate status, any status
-  // like the illumination status will be send in the main XML page update
-  // code
-  server.send(200, "text/plain", ""); //Send web page
-
-  // option 2 -- keep page live AND send a status
-  // if you want to send feed back immediataly
-  // note you must have reading code in the java script
-  /*
-    if (LED0) {
-    server.send(200, "text/plain", "1"); //Send web page
-    }
-    else {
-    server.send(200, "text/plain", "0"); //Send web page
-    }
-  */
-
+  btn0 = !btn0;
+  motor1.setSpeedInStepsPerSecond(motorVelocity/4); 
+  motor2.setSpeedInStepsPerSecond(motorVelocity/4); 
+  motor3.setSpeedInStepsPerSecond(motorVelocity/4);
+  Serial.print("Button 0 press"); Serial.print("motorVelocity in 25%");
+  server.send(200, "text/plain", ""); 
 }
 
 // same notion for processing button_1
 void ProcessButton_1() {
-
-  // just a simple way to toggle a LED on/off. Much better ways to do this
-  Serial.println("Button 1 press");
-  SomeOutput = !SomeOutput;
-
-  digitalWrite(PIN_OUTPUT, SomeOutput);
-Serial.print("Button 1 "); Serial.println(LED0);
-  // regardless if you want to send stuff back to client or not
-  // you must have the send line--as it keeps the page running
-  // if you don't want feedback from the MCU--or send all data via XML use this method
-  // sending feeback
-  server.send(200, "text/plain", ""); //Send web page
-
-  // if you want to send feed back immediataly
-  // note you must have proper code in the java script to read this data stream
-  /*
-    if (some_process) {
-    server.send(200, "text/plain", "SUCCESS"); //Send web page
-    }
-    else {
-    server.send(200, "text/plain", "FAIL"); //Send web page
-    }
-  */
+  motor1.setSpeedInStepsPerSecond(motorVelocity/2); 
+  motor2.setSpeedInStepsPerSecond(motorVelocity/2); 
+  motor3.setSpeedInStepsPerSecond(motorVelocity/2);
+  Serial.print("Button 1 press"); Serial.print("motorVelocity in 50%");
+  server.send(200, "text/plain", ""); 
 }
 
 
@@ -277,6 +238,14 @@ void SendXML() {
   else {
     strcat(XML, "<LED>0</LED>\n");
   }
+  
+  if (btn0) {
+    strcat(XML, "<btn0>1</btn0>\n");
+  }
+  else {
+    strcat(XML, "<btn0>0</btn0>\n");
+  }
+
 
   if (SomeOutput) {
     strcat(XML, "<SWITCH>1</SWITCH>\n");

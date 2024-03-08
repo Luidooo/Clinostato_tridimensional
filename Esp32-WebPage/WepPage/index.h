@@ -238,35 +238,35 @@ const char PAGE_MAIN[] PROGMEM = R"=====(
         <td><div class="bodytext">Velocidade dos Motores</div></td>
         <td>
         <ul>
-            <button type="button" class = "btnul" id = "btn0" onclick="ButtonPress1()">Toggle</button>
+            <button type="button" class = "btnul" id = "btn0" onclick="ButtonPress0()">Toggle</button>
             <button type="button" class = "btnul" id = "btn1" onclick="ButtonPress1()">Toggle</button>
-            <button type="button" class = "btnul" id = "btn2" onclick="ButtonPress1()">Toggle</button>
-            <button type="button" class = "btnul" id = "btn3" onclick="ButtonPress1()">Toggle</button>
+            <button type="button" class = "btnul" id = "btn2" onclick="ButtonPress2()">Toggle</button>
+            <button type="button" class = "btnul" id = "btn3" onclick="ButtonPress3()">Toggle</button>
         </ul>
         </td>
       </tr>
       <tr>
           <td><div class="bodytext">Todos os Eixos</div></td>
         <td>
-        <button type="button" class = "btn" id = "btn4" onclick="ButtonPress1()">Toggle</button>
+        <button type="button" class = "btn" id = "btn4" onclick="ButtonPress4()">Toggle</button>
         </td>
       </tr>
        <tr>
         <td><div class="bodytext">Eixo 1</div></td>
         <td>
-            <button type="button" class = "btn" id = "btn5" onclick="ButtonPress1()">Toggle</button>
+            <button type="button" class = "btn" id = "btn5" onclick="ButtonPress5()">Toggle</button>
         </td>
       </tr>
        <tr>
         <td><div class="bodytext">Eixo 2</div></td>
         <td>
-        <button type="button" class = "btn" id = "btn6" onclick="ButtonPress1()">Toggle</button>
+        <button type="button" class = "btn" id = "btn6" onclick="ButtonPress6()">Toggle</button>
         </td>
       </tr>
        <tr>
         <td><div class="bodytext">Eixo 3</div></td>
         <td>
-        <button type="button" class = "btn" id = "btn7" onclick="ButtonPress1()">Toggle</button>
+        <button type="button" class = "btn" id = "btn7" onclick="ButtonPress7()">Toggle</button>
        </td>
       </tr>
     </table>
