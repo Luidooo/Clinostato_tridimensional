@@ -1,5 +1,7 @@
 #include <WiFi.h>   
 #include <WebServer.h> 
+#include <ESP_FlexyStepper.h>
+#include <ESP_Google_Sheet_Client.h>
 #include "index.h" 
 
 #define LOCAL_SSID "MENDES"
@@ -19,6 +21,18 @@ bool LED0 = false, SomeOutput = false;
 uint32_t SensorUpdate = 0;
 int FanRPM = 0;
 
+const int motor1_step_pin = 2;
+const int motor1_direction_pin = 4;
+const int motor2_step_pin = 15;
+const int motor2_direction_pin = 16;
+const int motor3_step_pin = 17;
+const int motor3_direction_pin = 5;
+
+ESP_FlexyStepper motor1;
+ESP_FlexyStepper motor2;
+ESP_FlexyStepper motor3;
+
+
 char XML[2048];
 
 char buf[32];
@@ -28,6 +42,18 @@ WebServer server(80);
 void setup() {
 
   Serial.begin(115200);
+
+  motor1.connectToPins(motor1_step_pin, motor1_direction_pin);
+  motor2.connectToPins(motor2_step_pin, motor2_direction_pin);
+  motor3.connectToPins(motor3_step_pin, motor3_direction_pin);
+
+  motor1.setSpeedInStepsPerSecond(1000); 
+  motor1.setAccelerationInStepsPerSecondPerSecond(500);
+  motor2.setSpeedInStepsPerSecond(1000); 
+  motor2.setAccelerationInStepsPerSecondPerSecond(500);
+  motor3.setSpeedInStepsPerSecond(1000);
+  motor3.setAccelerationInStepsPerSecondPerSecond(500);
+
 
   pinMode(PIN_FAN, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
