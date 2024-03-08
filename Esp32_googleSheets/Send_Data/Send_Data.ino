@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <ESP_Google_Sheet_Client.h>
 
-#define WIFI_SSID "Luis Eduardo's iPhone"
-#define WIFI_PASSWORD "999618010"
+#define WIFI_SSID "MENDES"
+#define WIFI_PASSWORD "Ml2721091201"
 
 #define PROJECT_ID "esp32-416412"
 #define CLIENT_EMAIL "esp32-242@esp32-416412.iam.gserviceaccount.com"
