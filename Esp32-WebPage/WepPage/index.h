@@ -232,10 +232,10 @@ const char PAGE_MAIN[] PROGMEM = R"=====(
         <td><div class="bodytext">Velocidade dos Motores</div></td>
         <td>
         <ul>
-            <button type="button" class = "btnul" id = "btn0" onclick="ButtonPress0()">Toggle</button>
-            <button type="button" class = "btnul" id = "btn1" onclick="ButtonPress1()">Toggle</button>
-            <button type="button" class = "btnul" id = "btn2" onclick="ButtonPress2()">Toggle</button>
-            <button type="button" class = "btnul" id = "btn3" onclick="ButtonPress3()">Toggle</button>
+            <button type="button" class = "btnul" id = "btn0" onclick="ButtonPress0()">25%</button>
+            <button type="button" class = "btnul" id = "btn1" onclick="ButtonPress1()">50%</button>
+            <button type="button" class = "btnul" id = "btn2" onclick="ButtonPress2()">75%</button>
+            <button type="button" class = "btnul" id = "btn3" onclick="ButtonPress3()">100%</button>
         </ul>
         </td>
       </tr>
@@ -302,6 +302,10 @@ const char PAGE_MAIN[] PROGMEM = R"=====(
     }
 
     function ButtonPress0() {
+      document.getElementById("btn0").style.backgroundColor = "#008000";
+      document.getElementById("btn1").style.backgroundColor = "#444444";
+      document.getElementById("btn2").style.backgroundColor = "#444444";
+      document.getElementById("btn3").style.backgroundColor = "#444444";
       var xhttp = new XMLHttpRequest(); 
       var message;
       xhttp.open("PUT", "BUTTON_0", false);
@@ -309,18 +313,30 @@ const char PAGE_MAIN[] PROGMEM = R"=====(
     }
 
     function ButtonPress1() {
+      document.getElementById("btn0").style.backgroundColor = "#444444";
+      document.getElementById("btn1").style.backgroundColor = "#008000";
+      document.getElementById("btn2").style.backgroundColor = "#444444";
+      document.getElementById("btn3").style.backgroundColor = "#444444";
       var xhttp = new XMLHttpRequest(); 
       xhttp.open("PUT", "BUTTON_1", false);
       xhttp.send(); 
     }
       
     function ButtonPress2() {
+      document.getElementById("btn0").style.backgroundColor = "#444444";
+      document.getElementById("btn1").style.backgroundColor = "#444444";
+      document.getElementById("btn2").style.backgroundColor = "#008000";
+      document.getElementById("btn3").style.backgroundColor = "#444444";
       var xhttp = new XMLHttpRequest(); 
       xhttp.open("PUT", "BUTTON_2", false);
       xhttp.send(); 
     }
 
     function ButtonPress3() {
+      document.getElementById("btn0").style.backgroundColor = "#444444";
+      document.getElementById("btn1").style.backgroundColor = "#444444";
+      document.getElementById("btn2").style.backgroundColor = "#444444";
+      document.getElementById("btn3").style.backgroundColor = "#008000";
       var xhttp = new XMLHttpRequest(); 
       xhttp.open("PUT", "BUTTON_3", false);
       xhttp.send(); 
