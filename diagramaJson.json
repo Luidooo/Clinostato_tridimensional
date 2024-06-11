@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -57.6, "left": -139.16, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": -5.78, "left": 146.32, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -287.7, "left": 81, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc1", "top": -143.24, "left": -28.8, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd1", "top": 192, "left": -19.8, "attrs": {} },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": -159.2,
+      "left": 261.42,
+      "attrs": {}
+    },
+    { "type": "wokwi-a4988", "id": "drv1", "top": -244.8, "left": -264, "attrs": {} },
+    { "type": "wokwi-a4988", "id": "drv2", "top": -244.8, "left": -350.4, "attrs": {} },
+    { "type": "wokwi-a4988", "id": "drv3", "top": -244.8, "left": -436.8, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "dht1:VCC", "vcc1:VCC", "red", [ "v0" ] ],
+    [ "imu1:VCC", "vcc1:VCC", "red", [ "v0" ] ],
+    [ "dht1:SDA", "esp:5", "purple", [ "v0" ] ],
+    [ "pir1:OUT", "esp:17", "green", [ "v0" ] ],
+    [ "drv1:DIR", "esp:27", "white", [ "h-9.6", "v0" ] ],
+    [ "drv1:STEP", "esp:26", "gray", [ "h-19.2", "v9.6" ] ],
+    [ "drv2:DIR", "esp:25", "orange", [ "h-9.6", "v211.2" ] ],
+    [ "drv2:STEP", "esp:33", "gold", [ "h-19.2", "v220.8" ] ],
+    [ "drv3:DIR", "esp:32", "purple", [ "h-9.6", "v9.6" ] ],
+    [ "drv3:STEP", "esp:35", "magenta", [ "h-19.2", "v201.6" ] ],
+    [ "esp:GND.1", "gnd1:GND", "black", [ "h-19.05", "v96", "h144" ] ],
+    [ "pir1:GND", "gnd1:GND", "black", [ "v259.2", "h-9.86" ] ],
+    [ "dht1:GND", "gnd1:GND", "black", [ "v0" ] ],
+    [ "imu1:GND", "gnd1:GND", "black", [ "v-19.2", "h28.88", "v211.2" ] ],
+    [ "pir1:VCC", "vcc1:VCC", "red", [ "v28.8", "h-76.8", "v-76.8" ] ],
+    [ "esp:VN", "vcc1:VCC", "red", [ "h-19.05", "v-115.2", "h9.6" ] ],
+    [ "imu1:SCL", "esp:23", "cyan", [ "v0" ] ],
+    [ "imu1:SDA", "esp:22", "blue", [ "v-9.6", "h-19.12" ] ]
+  ],
+  "dependencies": {}
+}
